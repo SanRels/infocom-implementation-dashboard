@@ -1,0 +1,39 @@
+services:
+  # База данных PostgreSQL
+  db:
+    image: postgres:16 # Используем готовый образ PostgreSQL версии 16
+    environment:
+      POSTGRES_DB: infocom_db # Имя создаваемой базы данных
+      POSTGRES_USER: infocom_user # Пользователь базы данных
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-dev_password} # Учебный пароль по умолчанию; для реальной среды используй секрет
+    ports:
+      - "5432:5432" # Доступ к PostgreSQL с компьютера: порт 5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data # Сохраняем данные между перезапусками
+    healthcheck:
+      # Проверяем, готова ли база принимать подключения
+      test: ["CMD-SHELL", "pg_isready -U infocom_user -d infocom_db"]
+      interval: 5s # Интервал между проверками
+      timeout: 5s # Максимальное время одной проверки
+      retries: 5 # Количество неудачных проверок до ошибки
+
+  # Серверная часть приложения
+  backend:
+    build: ./backend # Собираем образ из Dockerfile в папке backend
+    ports:
+      - "8000:8000" # API будет доступен на порту 8000
+    depends_on:
+      db:
+        condition: service_healthy # Запускаем Backend после готовности базы данных
+
+  # Пользовательский интерфейс
+  frontend:
+    build: ./frontend # Собираем образ из Dockerfile в папке frontend
+    ports:
+      - "3000:3000" # Интерфейс будет доступен на порту 3000
+    depends_on:
+      - backend # Сначала запускаем Backend
+
+# Именованный том для хранения данных PostgreSQL
+volumes:
+  postgres_data:
