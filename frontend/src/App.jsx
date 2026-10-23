@@ -12,7 +12,7 @@ function App() {
       <header className="header">
         <h1 className="title">
           <span className="logo">⚡</span>
-          Team Project 2026
+          Панель управления внедрением ИС
         </h1>
         <p className="subtitle">Современный веб-проект команды разработчиков</p>
       </header>
