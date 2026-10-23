@@ -3,7 +3,7 @@ import './App.css'
 const teamMembers = [
   { name: 'Умар Тоев', role: 'Team Lead / DevOps', emoji: '👨‍💻' },
   { name: 'Юсуп Магомадов', role: 'Backend Developer', emoji: '👩‍💻' },
-  { name: 'Дмитрий Козлов', role: 'Frontend Developer', emoji: '⚙️' },
+  { name: 'Кирилл Тюнин', role: 'Frontend Developer', emoji: '⚙️' },
 ]
 
 function App() {
